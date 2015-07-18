@@ -226,14 +226,14 @@ tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output)
 
 	/* cache the object names? m_trie tak->symbol_cache */
 	uint64_t do_count;
-	m_list_size(&tak->target_ctf->data_objects, &do_count);
+	m_list_length(&tak->target_ctf->data_objects, &do_count);
 
 	find_status = m_list_find(&tak->target_ctf->data_objects,
 	                          compare_data_object_name,
 	                          symbol_name,
 	                          (void**)&symbol);
 
-	if (find_status == M_LIST_NOT_FOUND)
+	if (find_status == M_LIST_FALSE)
 		return TAK_E_SYMBOL;
 	
 	if (find_status != M_LIST_OK)
