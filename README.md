@@ -2,9 +2,10 @@
 C89 library that implements the type-aware kernel virtual memory access based
 on the CTF data set.
 
-## Build
+## Build & install
 ```
 $ ninja
+$ sudo ./install.sh
 ```
 
 ## Dependencies
