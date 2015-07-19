@@ -79,8 +79,8 @@ map_int(ctf_type type, void* _arg)
 
 		if (arg->need_alloc)
 			*(arg->output) = malloc(sizeof(intmax_t));
-		**((intmax_t**)arg->output) = signed_int;
-		printf("  Value: %lld\n", **((intmax_t**)arg->output));
+		*((intmax_t*)arg->output) = signed_int;
+		printf("  Value: %lld\n", *((intmax_t*)arg->output));
 	}
 
 	/* if (is_signed) { */
