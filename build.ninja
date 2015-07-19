@@ -11,6 +11,7 @@ build obj/open.o: compile src/open.c
 build obj/map.o: compile src/map.c
 build obj/find.o: compile src/find.c
 build obj/size.o: compile src/size.c
+build obj/errors.o: compile src/errors.c
 
-build bin/libtak.so: link obj/open.o obj/map.o obj/find.o obj/size.o
+build bin/libtak.so: link obj/open.o obj/map.o obj/find.o obj/size.o obj/errors.o
 
