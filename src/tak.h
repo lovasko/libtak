@@ -1,5 +1,7 @@
-#include <ctf/ctf.h>
+#ifndef TAK_H
+#define TAK_H
 
+#include <ctf/ctf.h>
 #include <kvm.h>
 
 #define TAK_OK                    0
@@ -11,6 +13,7 @@
 #define TAK_E_TYPE_INFO_UNKNOWN   6
 #define TAK_E_DATA_SOURCE_UNKNOWN 7
 #define TAK_E_KVM                 8
+#define TAK_E_MAX                 8
 
 #define TAK_TYPE_INFO_CTF 0
 /* #define TAK_TYPE_INFO_DWARF 1 */
@@ -19,16 +22,13 @@
 /* #define TAK_DATA_SOURCE_PTRACE   1 */
 /* #define TAK_DATA_SOURCE_ELF_DUMP 2 */
 
-struct tak
-{
+struct tak {
 	int type_info;
 	int data_source;
 	ctf_file local_ctf;
 	ctf_file target_ctf;
 	kvm_t* target_kvm;
 };
-
-typedef struct tak* tak_t;
 
 /*
  * IDEA
@@ -37,7 +37,12 @@ typedef struct tak* tak_t;
  * for the ptrace(2) data source, path to the executable, information about the
  * kvm(3) target and so on.
  */
-int tak_open(tak_t* tak, int type_info, int data_source);
+int tak_open(struct tak* t, int type_info, int data_source);
+int tak_map_sym(struct tak* t,
+                const char* local_type_name,
+                const char* symbol_name,
+                void** output);
+char* tak_error_string(int retval);
 
-int tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output);
+#endif
 

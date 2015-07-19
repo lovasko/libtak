@@ -10,7 +10,7 @@
 struct map_arg
 {
 	unsigned long addr;
-	tak_t tak;
+	struct tak* t;
 	void** output;
 	ctf_type local_type;
 	ctf_type target_type;
@@ -90,8 +90,8 @@ map_int(ctf_type type, void* _arg)
 
 	if (is_signed) {
 		signed_int = 0;
-		if (arg->tak->data_source == TAK_DATA_SOURCE_KVM) {
-			kvm_read(arg->tak->target_kvm, arg->addr, &signed_int, sizeof(intmax_t));
+		if (arg->t->data_source == TAK_DATA_SOURCE_KVM) {
+			kvm_read(arg->t->target_kvm, arg->addr, &signed_int, sizeof(intmax_t));
 		} else
 			return TAK_E_DATA_SOURCE_UNKNOWN;
 
@@ -108,8 +108,8 @@ map_int(ctf_type type, void* _arg)
 		**((intmax_t**)arg->output) = signed_int;
 	} else {
 
-		if (arg->tak->data_source == TAK_DATA_SOURCE_KVM) {
-			kvm_read(arg->tak->target_kvm, arg->addr, &unsigned_int, sizeof(uintmax_t));
+		if (arg->t->data_source == TAK_DATA_SOURCE_KVM) {
+			kvm_read(arg->t->target_kvm, arg->addr, &unsigned_int, sizeof(uintmax_t));
 		} else 
 			return TAK_E_DATA_SOURCE_UNKNOWN;	
 
@@ -174,7 +174,7 @@ map_struct(ctf_type type, void* _arg)
 			member_arg.need_alloc = 0;
 			member_arg.target_type = target_member->type;
 			member_arg.local_type = local_member->type;
-			member_arg.tak = arg->tak;
+			member_arg.t = arg->t;
 			member_arg.addr = arg->addr + (target_member->offset/8);
 
 			member_addr = (char*)(*arg->output);
@@ -214,7 +214,10 @@ map_type(struct map_arg* arg)
 }
 
 int
-tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output)
+tak_map_sym(struct tak* t,
+            const char* local_type_name,
+            const char* symbol_name,
+            void** output)
 {
 	ctf_data_object symbol;
 	ctf_type local_type;
@@ -226,11 +229,11 @@ tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output)
 
 	/* cache the object names? m_trie tak->symbol_cache */
 	uint64_t do_count;
-	m_list_length(&tak->target_ctf->data_objects, &do_count);
+	m_list_length(&t->target_ctf->data_objects, &do_count);
 
-	find_status = m_list_find(&tak->target_ctf->data_objects,
+	find_status = m_list_find(&t->target_ctf->data_objects,
 	                          compare_data_object_name,
-	                          symbol_name,
+	                          (char*)symbol_name,
 	                          (void**)&symbol);
 
 	if (find_status == M_LIST_FALSE)
@@ -242,7 +245,7 @@ tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output)
 	ctf_data_object_get_type(symbol, &symbol_type);
 
 	/* cache the type names? m_trie tak->type_cache*/
-	local_type = find_type(tak->local_ctf, local_type_name);
+	local_type = find_type(t->local_ctf, local_type_name);
 	if (local_type == NULL)
 		return TAK_E_NO_TYPE;
 
@@ -264,7 +267,7 @@ tak_map_sym(tak_t tak, char* local_type_name, char* symbol_name, void** output)
 	       ctf_kind_to_string(symbol_kind));
 
 	arg.addr = symbol->value;
-	arg.tak = tak;
+	arg.t = t;
 	arg.output = output;
 	arg.local_type = local_type;
 	arg.target_type = symbol_type;
