@@ -15,7 +15,7 @@
  * @return a ctf_type on a match, NULL otherwise
  */
 ctf_type
-find_type(ctf_file file, char* name);
+find_type(ctf_file file, const char* name);
 
 #endif 
 
