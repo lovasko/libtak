@@ -15,7 +15,7 @@ size_member(void* member, void* arg)
 	ctf_type type;
 	size_t size;
 
-	printf("measuring struct member\n");
+	printf("Measuring struct member\n");
 	ctf_member_get_type(member, &type);
 	size = size_type(type);
 	*((size_t*)arg) += size;
@@ -26,7 +26,7 @@ size_struct(ctf_type type, void* arg)
 {
 	ctf_struct_union _struct;
 	
-	printf("measuring struct\n");
+	printf("Measuring struct\n");
 	ctf_struct_union_init(type, &_struct);
 	*((size_t*)arg) = 0;
 	ctf_struct_union_foreach_member(_struct, arg, size_member);
@@ -44,7 +44,7 @@ size_int(ctf_type type, void* arg)
 	ctf_int_get_size(_int, &size);
 
 	*((size_t*)arg) = (size+7)/8;
-	printf("measuring integer: %u %d\n", *((size_t*)arg), (size+7)/8);
+	printf("Measuring integer: %u\n", *((size_t*)arg));
 	return CTF_OK;
 }
 
@@ -65,16 +65,25 @@ size_typedef(ctf_type type, void* arg)
 	return CTF_OK;
 }
 
+static int
+size_pointer(ctf_type type, void* arg)
+{
+	(void) type;
+
+	*((size_t*)arg) = sizeof(intptr_t);
+	return CTF_OK;
+}
+
 size_t
 size_type(ctf_type type)
 {
 	size_t result;
-
+	ctf_kind kind;
 	ctf_polycall size_fns[] = {
 		size_noop,
 		size_int,
 		size_noop,
-		size_noop,
+		size_pointer,
 		size_noop,
 		size_noop,
 		size_struct,
@@ -87,9 +96,8 @@ size_type(ctf_type type)
 		size_noop
 	};
 
-	ctf_kind kind;
 	ctf_type_get_kind(type, &kind);
-	printf("got to measure type of a kind %s\n", ctf_kind_to_string(kind));
+	printf("Measuring type of a kind %s\n", ctf_kind_to_string(kind));
 
 	ctf_type_polycall(type, &result, size_fns);
 	return result;
