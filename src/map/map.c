@@ -73,8 +73,11 @@ map_type(struct map_arg* arg)
 
 	ctf_type_get_kind(arg->local_type, &local_type_kind);
 	ctf_type_get_kind(arg->target_type, &target_type_kind);
-	if (local_type_kind != target_type_kind)
+	if (local_type_kind != target_type_kind) {
+		printf("Tye mismatch: %s vs %s\n", ctf_kind_to_string(local_type_kind),
+		  ctf_kind_to_string(target_type_kind));
 		return TAK_E_NO_TYPE_MATCH;
+	}
 
 	printf("Mapping:\n  local kind: %d\n  target kind: %d\n",
 		arg->target_type->kind,
@@ -88,7 +91,7 @@ int
 tak_map_sym(struct tak* t,
             const char* local_type_name,
             const char* symbol_name,
-            void** output)
+            void* output)
 {
 	ctf_data_object symbol;
 	ctf_type local_type;
@@ -123,7 +126,6 @@ tak_map_sym(struct tak* t,
 	arg.output = output;
 	arg.local_type = local_type;
 	arg.target_type = symbol_type;
-	arg.need_alloc = 1;
 
 	printf("Starting mapping\n");
 	map_type(&arg);

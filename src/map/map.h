@@ -11,8 +11,7 @@ struct map_arg
 	ctf_type target_type;
 	unsigned long addr;
 	struct tak* t;
-	void** output;
-	int need_alloc;
+	void* output;
 };
 
 int map_noop(ctf_type type, void* _arg);
