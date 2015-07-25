@@ -57,11 +57,11 @@ map_struct(ctf_type type, void* _arg)
 			member_arg.t = arg->t;
 			member_arg.addr = arg->addr + (target_member->offset/8);
 
-			member_addr = (char*)(arg->output);
+			member_addr = (char*)(*arg->output);
 			printf("member_addr = %p\n", member_addr);
 			member_addr += local_member->offset/8;
 			printf("member_addr = %p\n", member_addr);
-			member_arg.output = (void*)&member_addr;
+			member_arg.output = (void**)&member_addr;
 			map_type(&member_arg);
 		} else
 			printf("No '%s' member in target!\n", local_member_name);

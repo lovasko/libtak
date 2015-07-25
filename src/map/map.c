@@ -91,7 +91,7 @@ int
 tak_map_sym(struct tak* t,
             const char* local_type_name,
             const char* symbol_name,
-            void* output)
+            void** output)
 {
 	ctf_data_object symbol;
 	ctf_type local_type;

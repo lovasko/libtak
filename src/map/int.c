@@ -77,7 +77,8 @@ map_int(ctf_type type, void* _arg)
 		signed_int = sign_extend(&signed_data, size, bytesize);
 		printf("  Value: %lld\n", signed_int);
 
-		*((intmax_t*)arg->output) = signed_int;
+		/* *((intmax_t*)arg->output) = signed_int; */
+		*((intmax_t*)(*arg->output)) = signed_int;
 		printf("  Value: %lld\n", *((intmax_t*)arg->output));
 	}
 
