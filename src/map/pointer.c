@@ -40,9 +40,7 @@ map_pointer(ctf_type type, void* _arg)
 	printf("Allocating %u bytes at address %p\n", 
 		local_ref_type_size, storage);
 
-	printf("%p %p\n", in_arg->output, *in_arg->output);
 	*(intptr_t*)(*(in_arg->output)) = (intptr_t)storage;
-	/* printf("%p now contains %p\n", in_arg->output, in_arg->output); */
 
 	out_arg.local_type = local_ref_type;
 	out_arg.target_type = target_ref_type;
