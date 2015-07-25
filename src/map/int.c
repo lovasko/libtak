@@ -57,7 +57,7 @@ map_int(ctf_type type, void* _arg)
 	printf("mapping an integer!\n");
 
 	arg = _arg;
-	ctf_int_init(type, &_int);
+	ctf_int_init(arg->target_type, &_int);
 	ctf_int_get_offset(_int, &offset);
 	ctf_int_get_size(_int, &size);
 	ctf_int_get_content(_int, &content);
