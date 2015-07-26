@@ -52,6 +52,7 @@ map_int(ctf_type type, void* _arg)
 	uint8_t sign;
 	struct map_arg* arg;
 	intmax_t signed_data;
+	uintmax_t unsigned_data;
 	size_t bytesize;
 
 	printf("mapping an integer!\n");
@@ -83,7 +84,9 @@ map_int(ctf_type type, void* _arg)
 		*((intmax_t*)(*arg->output)) = signed_int;
 		printf("  Value: %lld\n", *((intmax_t*)arg->output));
 	} else {
-		printf("NOT SIGNED STUFF\n");
+		kvm_read(arg->t->target_kvm, arg->addr, &unsigned_data, sizeof(uintmax_t));
+		unsigned_int = zero_extend(&unsigned_data, size, bytesize);
+		*((uintmax_t*)(*arg->output)) = unsigned_int;
 	}
 
 	/* if (is_signed) { */
