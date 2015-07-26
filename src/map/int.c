@@ -64,8 +64,10 @@ map_int(ctf_type type, void* _arg)
 	ctf_int_get_is_signed(_int, &is_signed);
 
 	nbytes = (offset + size)/8;
-	if (nbytes > sizeof(uintmax_t) || nbytes > sizeof(intmax_t))
+	if (nbytes > sizeof(uintmax_t) || nbytes > sizeof(intmax_t)) {
+		printf("Not enough bytes! %llu vs %llu\n", nbytes, sizeof(intmax_t));
 		return 1;
+	}
 
 	if (size % 8 == 0)
 		bytesize = size/8;
@@ -80,6 +82,8 @@ map_int(ctf_type type, void* _arg)
 		/* *((intmax_t*)arg->output) = signed_int; */
 		*((intmax_t*)(*arg->output)) = signed_int;
 		printf("  Value: %lld\n", *((intmax_t*)arg->output));
+	} else {
+		printf("NOT SIGNED STUFF\n");
 	}
 
 	/* if (is_signed) { */
