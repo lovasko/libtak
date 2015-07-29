@@ -14,6 +14,7 @@ struct map_arg
 	void** output;
 };
 
+int map_array(ctf_type type, void* _arg);
 int map_noop(ctf_type type, void* _arg);
 int map_int(ctf_type type, void* _arg);
 int map_pointer(ctf_type type, void* _arg);

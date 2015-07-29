@@ -5,8 +5,8 @@
 
 #include "tak.h"
 #include "find.h"
-#include "size.h"
-#include "map.h"
+#include "size/size.h"
+#include "map/map.h"
 
 static ctf_type
 solve_typedef_chain(ctf_type type)
@@ -51,7 +51,7 @@ map_type(struct map_arg* arg)
 		map_int,
 		map_noop,
 		map_pointer,
-		map_noop,
+		map_array,
 		map_noop,
 		map_struct,
 		map_noop,
@@ -82,6 +82,8 @@ map_type(struct map_arg* arg)
 	printf("Mapping:\n  local kind: %d\n  target kind: %d\n",
 		arg->target_type->kind,
 		arg->local_type->kind);
+	getchar();
+	getchar();
 
 	ctf_type_polycall(arg->local_type, arg, map_fns);
 	return CTF_OK;

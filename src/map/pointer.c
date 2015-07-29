@@ -1,5 +1,5 @@
 #include "map/map.h"
-#include "size.h"
+#include "size/size.h"
 
 int
 map_pointer(ctf_type type, void* _arg)
