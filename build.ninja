@@ -9,14 +9,22 @@ rule link
 
 build obj/open.o: compile src/open.c
 build obj/find.o: compile src/find.c
-build obj/size.o: compile src/size.c
 build obj/errors.o: compile src/errors.c
 
+build obj/map/array.o: compile src/map/array.c
 build obj/map/int.o: compile src/map/int.c
 build obj/map/map.o: compile src/map/map.c
 build obj/map/noop.o: compile src/map/noop.c
 build obj/map/pointer.o: compile src/map/pointer.c
 build obj/map/struct.o: compile src/map/struct.c
 
-build bin/libtak.so: link obj/open.o obj/find.o obj/size.o obj/errors.o obj/map/int.o obj/map/map.o obj/map/noop.o obj/map/pointer.o obj/map/struct.o
+build obj/size/array.o: compile src/size/array.c
+build obj/size/int.o: compile src/size/int.c
+build obj/size/noop.o: compile src/size/noop.c
+build obj/size/pointer.o: compile src/size/pointer.c
+build obj/size/size.o: compile src/size/size.c
+build obj/size/struct.o: compile src/size/struct.c
+build obj/size/typedef.o: compile src/size/typedef.c
+
+build bin/libtak.so: link obj/open.o obj/find.o obj/errors.o obj/map/array.o obj/map/int.o obj/map/map.o obj/map/noop.o obj/map/pointer.o obj/map/struct.o obj/size/array.o obj/size/int.o obj/size/noop.o obj/size/pointer.o obj/size/size.o obj/size/struct.o obj/size/typedef.o
 
