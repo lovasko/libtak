@@ -7,7 +7,6 @@ size_member(void* member, void* arg)
 	size_t size;
 
 	printf("Measuring struct member\n");
-	getchar();
 	ctf_member_get_type(member, &type);
 	size = size_type(type);
 	*((size_t*)arg) += size;

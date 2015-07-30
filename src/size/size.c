@@ -24,7 +24,6 @@ size_type(ctf_type type)
 
 	ctf_type_get_kind(type, &kind);
 	printf("Measuring type of a kind %s\n", ctf_kind_to_string(kind));
-	getchar();
 
 	ctf_type_polycall(type, &result, size_fns);
 	printf("RESULT: %u\n", result);
