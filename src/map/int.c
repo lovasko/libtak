@@ -49,7 +49,6 @@ map_int(ctf_type type, void* _arg)
 	intmax_t signed_int;
 	uintmax_t unsigned_int;
 	uint8_t is_signed;
-	uint8_t sign;
 	struct map_arg* arg;
 	intmax_t signed_data;
 	uintmax_t unsigned_data;
@@ -68,7 +67,7 @@ map_int(ctf_type type, void* _arg)
 
 	nbytes = (offset + size)/8;
 	if (nbytes > sizeof(uintmax_t) || nbytes > sizeof(intmax_t)) {
-		printf("Not enough bytes! %llu vs %llu\n", nbytes, sizeof(intmax_t));
+		printf("Not enough bytes! %u vs %u\n", nbytes, sizeof(intmax_t));
 		return 1;
 	}
 
