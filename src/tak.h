@@ -39,8 +39,8 @@ struct tak {
  */
 int tak_open(struct tak* t, int type_info, int data_source);
 int tak_map_sym(struct tak* t,
-                const char* local_type_name,
-                const char* symbol_name,
+                char* local_type_name,
+                char* symbol_name,
                 void** output);
 char* tak_error_string(int retval);
 

@@ -4,7 +4,7 @@
 
 struct type_arg
 {
-	const char* name;
+	char* name;
 	ctf_type type;
 };
 
@@ -128,11 +128,11 @@ compare_type_name(void* type, void* arg)
 }
 
 ctf_type
-find_type(ctf_file file, const char* name)
+find_type(ctf_file file, char* name)
 {
 	struct type_arg arg;
 
-	arg.name = name;
+	arg.name = (char*)name;
 	arg.type = NULL;
 
 	ctf_file_foreach_type(file, &arg, compare_type_name);
