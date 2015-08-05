@@ -1,5 +1,5 @@
 cflags = -g -fPIC -Isrc -I/usr/include/ctf/ -ansi -pedantic -Wall -Wextra
-ldflags = -lkvm -lbsdctf -lmlist
+ldflags = -lkvm -lbsdctf -lmlist -lmtrie
 
 rule compile
  command = clang $cflags -c $in -o $out

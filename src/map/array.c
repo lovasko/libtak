@@ -46,6 +46,7 @@ map_array(ctf_type type, void* _arg)
 	out_arg.addr = in_arg->addr;
 	out_arg.output = in_arg->output;
 	out_arg.t = in_arg->t;
+	out_arg.pointer_db = in_arg->pointer_db;
 
 	for (idx = 0; idx < local_array_length; idx++) {
 		printf("Array idx %d\n", idx);

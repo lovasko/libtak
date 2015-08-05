@@ -1,3 +1,5 @@
+#include <sys/limits.h>
+
 #include <kvm.h>
 #include <ctf/ctf.h>
 #include <string.h>
@@ -87,10 +89,21 @@ map_type(struct map_arg* arg)
 	return CTF_OK;
 }
 
+static int16_t
+hash(char key)
+{
+	int16_t result;
+
+	result = (int16_t)key;
+	result -= (int16_t)CHAR_MIN;
+	printf("key: %d\n", result);
+	return result;
+}
+
 int
 tak_map_sym(struct tak* t,
-            const char* local_type_name,
-            const char* symbol_name,
+            char* local_type_name,
+            char* symbol_name,
             void** output)
 {
 	ctf_data_object symbol;
@@ -98,6 +111,7 @@ tak_map_sym(struct tak* t,
 	ctf_type symbol_type;
 	int find_status;
 	struct map_arg arg;
+	struct m_trie pointer_db;
 
 	/* cache the object names? m_trie tak->symbol_cache */
 	uint64_t do_count;
@@ -121,11 +135,14 @@ tak_map_sym(struct tak* t,
 	if (local_type == NULL)
 		return TAK_E_NO_TYPE;
 
+	m_trie_init(&pointer_db, hash);
+
 	arg.addr = symbol->value;
 	arg.t = t;
 	arg.output = output;
 	arg.local_type = local_type;
 	arg.target_type = symbol_type;
+	arg.pointer_db = &pointer_db;
 
 	printf("Starting mapping\n");
 	map_type(&arg);

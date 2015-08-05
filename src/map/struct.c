@@ -55,6 +55,7 @@ map_struct(ctf_type type, void* _arg)
 			member_arg.target_type = target_member->type;
 			member_arg.local_type = local_member->type;
 			member_arg.t = arg->t;
+			member_arg.pointer_db = arg->pointer_db;
 			member_arg.addr = arg->addr + (target_member->offset/8);
 
 			member_addr = (char*)(*arg->output);

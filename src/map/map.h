@@ -3,6 +3,8 @@
 
 #include <ctf/ctf.h>
 
+#include <m_trie.h>
+
 #include "tak.h"
 
 struct map_arg
@@ -12,6 +14,7 @@ struct map_arg
 	unsigned long addr;
 	struct tak* t;
 	void** output;
+	struct m_trie* pointer_db;
 };
 
 int map_array(ctf_type type, void* _arg);
